@@ -1,0 +1,21 @@
+
+service: api-kevinmitchell-io
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  stage: prod
+  region: us-west-2
+  profile: api-kevinmitchell-io
+
+functions:
+  app:
+    handler: src/index.handler
+    events:
+      - http: ANY /content
+      - http: 'ANY /content/{proxy+}'
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-offline
+  - serverless-dynamodb-local
