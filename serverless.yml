@@ -12,8 +12,14 @@ functions:
   app:
     handler: src/index.handler
     events:
-      - http: ANY /content
-      - http: 'ANY /content/{proxy+}'
+      - http:
+          method: ANY 
+          path: /content
+          cors: true
+      - http: 
+          method: ANY
+          path: '/content/{proxy+}'
+          cors: true
 
 plugins:
   - serverless-plugin-typescript
