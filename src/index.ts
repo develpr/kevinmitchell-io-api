@@ -50,7 +50,7 @@ app.get('/content/blocks/:id', function(req, res) {
 });
 
 
-app.get('/content/blogs/:slug', function(req, res) {
+app.get('/content/posts/:slug', function(req, res) {
   const params = {
     TableName: "kevinmitchell-io-content-blogs",
     FilterExpression: "slug = :slug",    
@@ -74,7 +74,7 @@ app.get('/content/blogs/:slug', function(req, res) {
 });
 
 
-app.get('/content/blogs', function(req, res) {
+app.get('/content/posts', function(req, res) {
 
   let site = req.query.site;
 
@@ -108,7 +108,7 @@ app.get('/content/blogs', function(req, res) {
 
 app.get('/content', function (req, res) {
   res.status(404);
-  res.json({"error": true, "message":"Please check /content/blogs or /content/blocks for specific content."});
+  res.json({"error": true, "message":"Please check /content/posts or /content/blocks for specific content."});
 });
 
 module.exports.handler = serverless(app);
