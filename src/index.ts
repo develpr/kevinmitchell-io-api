@@ -90,14 +90,18 @@ app.get('/content/posts', function(req, res) {
     ExpressionAttributeValues: {
       ':site': site
     },
-    ProjectionExpression: "title,slug,dateCreated",
+    ProjectionExpression: "title,slug,dateCreated,preview",
     ScanIndexForward: false,    // true = ascending, false = descending    
   }  
   dynamoDb.query(params, (error: any, result: any) => {
     if (error) {
       res.status(400).json({ error: 'Could not load blog post.' });
     }    
-    if (result.Items) {          
+    if (result.Items && result.Items.length > 0) {          
+      result.Items.map((item:any) => {
+        item.previewHtml = marked(item.preview);
+        return item;
+      });
       res.json(result.Items);
     } else {
       res.status(404).json({ error: "Blog post not found" });
