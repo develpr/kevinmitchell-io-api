@@ -1,7 +1,7 @@
 const serverless = require("serverless-http");
 import * as express from "express";
 import * as bodyParser from "body-parser";
-import * as markedBear from "marked-bear";
+import * as marked from "marked";
 
 const AWS = require("aws-sdk");
 const dynamoDb = new AWS.DynamoDB.DocumentClient({
@@ -42,7 +42,7 @@ app.get("/content/blocks/:id", function(req, res) {
     }
     if (result.Item) {
       let response = result.Item;
-      response.html = markedBear(response.content);
+      response.html = marked(response.content);
       res.json(response);
     } else {
       res.status(404).json({ error: "Block not found" });
@@ -65,7 +65,7 @@ app.get("/content/posts/:slug", function(req, res) {
 
     if (result.Items && result.Items.length > 0) {
       let response = result.Items[0];
-      response.html = markedBear(response.post);
+      response.html = marked(response.post);
       res.json(response);
     } else {
       res.status(404).json({ error: "Blog post not found" });
@@ -97,7 +97,7 @@ app.get("/content/posts", function(req, res) {
     }
     if (result.Items && result.Items.length > 0) {
       result.Items.map((item: any) => {
-        item.previewHtml = markedBear(item.preview);
+        item.previewHtml = marked(item.preview);
         return item;
       });
       res.json(result.Items);
